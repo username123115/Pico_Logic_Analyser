@@ -1,0 +1,20 @@
+.program main
+;enable autopush to constantly sample data
+.wrap_target
+    in pins, 1
+.wrap
+
+% c-sdk {
+static inline void main_program_init(PIO pio, uint sm, uint offset, uint pin, bool trigger_level, float div)
+{
+    pio_sm_config c = main_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, pin);
+    sm_config_set_in_shift(&c, true, true, 32);
+    sm_config_set_clkdiv(&c, div);
+    
+    pio_sm_set_consecutive_pindirs(pio, sm, pin, 1, false);
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_exec(pio0, sm, pio_encode_wait_pin(trigger_level, 0));
+    pio_sm_set_enabled(pio, sm, true);
+}
+%}
