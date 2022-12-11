@@ -38,6 +38,7 @@ target_link_libraries(Logic_Analyser
         hardware_pio
         hardware_irq
         hardware_gpio
+        hardware_pwm
         )
 
 pico_add_extra_outputs(Logic_Analyser)
